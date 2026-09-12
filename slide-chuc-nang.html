@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form2Change — Chức năng & Điểm mạnh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --text-white: #ffffff;
+      --text-soft: #f0f9ff;
+      --text-muted: #e0f2fe;
+      --text-dim: #bae6fd;
+      --cyan: #38bdf8;
+      --indigo: #818cf8;
+      --violet: #c084fc;
+      --rose: #fb7185;
+      --emerald: #34d399;
+      --amber: #fbbf24;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body, .slide { user-select: text; }
+
+    html, body { height: 100%; }
+
+    body {
+      background:
+        radial-gradient(ellipse 75% 55% at 50% 25%, rgba(56, 189, 248, 0.32) 0%, transparent 70%),
+        radial-gradient(circle 550px at 0% 100%, rgba(244, 114, 182, 0.28) 0%, transparent 65%),
+        radial-gradient(circle 550px at 100% 100%, rgba(251, 146, 60, 0.25) 0%, transparent 65%),
+        radial-gradient(circle 450px at 2% 5%, rgba(255, 255, 255, 0.22) 0%, transparent 55%),
+        radial-gradient(circle 450px at 98% 8%, rgba(255, 255, 255, 0.22) 0%, transparent 55%),
+        linear-gradient(172deg, #0284c7 0%, #0369a1 35%, #075985 70%, #0c4a6e 100%);
+      color: var(--text-white);
+      font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sky {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    header {
+      height: 52px;
+      background: rgba(3, 53, 85, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 20;
+      flex-shrink: 0;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-box {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #38bdf8, #0284c7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.6);
+    }
+
+    .brand-name { font-size: 15px; font-weight: 800; }
+
+    .pill {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.32);
+    }
+
+    .section-chip {
+      font-size: 12px;
+      font-weight: 700;
+      color: #e0f2fe;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+
+    .btn-hdr {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #fff;
+      border-radius: 6px;
+      padding: 4px 11px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-hdr:hover { background: rgba(255, 255, 255, 0.22); }
+
+    .progress-bar-wrap {
+      height: 3px;
+      background: rgba(255, 255, 255, 0.15);
+      width: 100%;
+      flex-shrink: 0;
+      z-index: 20;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 8.33%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8, #f472b6);
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.8);
+    }
+
+    main {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: 22px 48px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateX(48px) scale(0.98);
+      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  visibility 0.45s;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateX(0) scale(1);
+      z-index: 2;
+    }
+
+    .slide.exit-left {
+      transform: translateX(-48px) scale(0.98);
+    }
+
+    .slide.exit-right {
+      transform: translateX(48px) scale(0.98);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.1px;
+      padding: 5px 14px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      align-self: flex-start;
+    }
+
+    .slide.center .badge,
+    .slide.center .eyebrow { align-self: center; }
+
+    .slide h1, .slide h2 {
+      font-weight: 900;
+      letter-spacing: -0.6px;
+      line-height: 1.15;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+    }
+
+    .slide h1 { font-size: clamp(28px, 3.6vw, 46px); }
+    .slide h2 { font-size: clamp(24px, 3vw, 36px); }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #ffffff 15%, #e0f2fe 50%, #bae6fd 80%, #fed7aa 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 4px 12px rgba(2, 44, 76, 0.4));
+    }
+
+    .lead {
+      font-size: 16px;
+      color: #e0f2fe;
+      line-height: 1.55;
+      max-width: 860px;
+      margin-bottom: 18px;
+      font-weight: 500;
+    }
+
+    .slide.center { text-align: center; align-items: center; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+
+    .card {
+      background: rgba(255, 255, 255, 0.13);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 16px;
+      padding: 16px 16px 14px;
+      box-shadow: 0 16px 34px rgba(2, 36, 64, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      text-align: left;
+    }
+
+    .card h3 {
+      font-size: 15.5px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .card p, .card li {
+      font-size: 13.5px;
+      color: #e0f2fe;
+      line-height: 1.5;
+    }
+
+    .card ul { padding-left: 16px; }
+
+    .card.cyan { border-top: 4px solid #38bdf8; }
+    .card.violet { border-top: 4px solid #c084fc; }
+    .card.emerald { border-top: 4px solid #34d399; }
+    .card.amber { border-top: 4px solid #fbbf24; }
+    .card.rose { border-top: 4px solid #fb7185; }
+    .card.indigo { border-top: 4px solid #818cf8; }
+
+    .icon-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      margin-bottom: 10px;
+      flex-shrink: 0;
+    }
+
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 14px;
+      align-items: stretch;
+      width: 100%;
+      max-width: 1040px;
+    }
+
+    .vs-pill {
+      align-self: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .flow {
+      display: flex;
+      align-items: stretch;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .flow-item { flex: 1; }
+    .flow-arrow {
+      align-self: center;
+      color: #bae6fd;
+      font-size: 20px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .metric {
+      font-size: clamp(28px, 3.4vw, 42px);
+      font-weight: 900;
+      letter-spacing: -1px;
+      line-height: 1;
+      margin: 4px 0 8px;
+      text-shadow: 0 0 20px rgba(56, 189, 248, 0.45);
+    }
+
+    .note {
+      margin-top: 14px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 8px 16px;
+      border-radius: 999px;
+      align-self: flex-start;
+    }
+
+    .slide.center .note { align-self: center; }
+
+    .example {
+      margin-top: 10px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: rgba(251, 191, 36, 0.14);
+      border: 1px solid rgba(251, 191, 36, 0.36);
+      font-size: 12.5px;
+      color: #e0f2fe;
+      line-height: 1.4;
+    }
+
+    .example b {
+      display: block;
+      color: #fff;
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      margin-bottom: 3px;
+    }
+
+    .story-step {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 10px;
+      align-items: start;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 12px;
+      padding: 8px 10px;
+    }
+
+    .story-step h3 {
+      font-size: 13.5px;
+      font-weight: 800;
+      margin-bottom: 2px;
+    }
+
+    .story-step p {
+      font-size: 12.5px;
+      color: #e0f2fe;
+      line-height: 1.4;
+    }
+
+    .story-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.26);
+    }
+
+    .metric-source-tag {
+      font-size: 11.5px;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      padding: 5px 12px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      margin-top: 10px;
+    }
+
+    a.metric-source-tag:hover {
+      background: rgba(255, 255, 255, 0.3);
+      border-color: #ffffff;
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+    }
+
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 18px 0 16px;
+    }
+
+    footer {
+      height: 46px;
+      background: rgba(3, 53, 85, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 20;
+      flex-shrink: 0;
+    }
+
+    .slide-dots { display: flex; align-items: center; gap: 7px; }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .dot.active {
+      width: 22px;
+      background: #ffffff;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
+    }
+
+    .footer-hint { font-size: 12px; color: #bae6fd; }
+
+    kbd {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-size: 11px;
+      font-family: monospace;
+      color: #fff;
+    }
+
+    .nav-btns { display: flex; align-items: center; gap: 8px; }
+
+    .slide-num {
+      font-size: 13px;
+      font-weight: 800;
+      color: #a5b4fc;
+      min-width: 52px;
+      text-align: center;
+    }
+
+    .row-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 1200px) {
+      .slide { padding: 18px 28px 16px; }
+      .grid-5 { grid-template-columns: repeat(3, 1fr); }
+      .flow { flex-wrap: wrap; }
+      .flow-item { min-width: 180px; }
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 980px) {
+      .slide { padding: 16px 20px; }
+      .grid-3, .grid-4, .grid-5, .compare { grid-template-columns: 1fr; }
+      .flow { flex-direction: column; }
+      .flow-arrow { transform: rotate(90deg); }
+      body { overflow: auto; }
+      .slide { position: relative; min-height: auto; }
+    }
+  </style>
+</head>
+<body>
+  <svg class="sky" viewBox="0 0 1440 900" fill="none" aria-hidden="true">
+    <path d="M 200 160 Q 480 90 760 260 T 1260 190" stroke="rgba(255, 255, 255, 0.28)" stroke-width="1.75" stroke-dasharray="5 7" />
+    <path d="M 180 620 Q 520 720 840 560 T 1240 660" stroke="rgba(255, 255, 255, 0.22)" stroke-width="1.75" stroke-dasharray="5 7" />
+  </svg>
+
+  <header>
+    <div class="brand-wrap">
+      <div class="logo-box">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+        </svg>
+      </div>
+      <span class="brand-name">Form2Change</span>
+      <span class="pill">Đội thi: AutoWork</span>
+      <span class="pill" style="background: rgba(56, 189, 248, 0.22);">AI Tinkerers Đà Nẵng</span>
+    </div>
+    <div class="section-chip" id="section-chip">Giới thiệu</div>
+    <button class="btn-hdr" id="btn-fullscreen" title="Toàn màn hình [F]">Toàn màn hình [F]</button>
+  </header>
+
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progress-bar"></div>
+  </div>
+
+  <main>
+
+    <!-- 1. Bìa -->
+    <section class="slide center active" data-slide="1" data-section="Giới thiệu">
+      <h1><span class="gradient-text">FROM FORM TO CHANGE</span></h1>
+      <p class="lead" style="text-align:center; margin-bottom: 8px;">
+        Turn every form into an opportunity.<br>
+        Biến mỗi biểu mẫu bạn điền thành một cơ hội thành công mới.
+      </p>
+      <div class="hero-pills">
+        <span class="pill" style="padding: 7px 14px; font-size: 13px;">Trợ lý AI tự hành trên trình duyệt</span>
+        <span class="pill" style="padding: 7px 14px; font-size: 13px; background: rgba(52, 211, 153, 0.22);">100% sự thật — không bịa đặt</span>
+        <span class="pill" style="padding: 7px 14px; font-size: 13px;">1 cú click • Tự sửa lỗi</span>
+      </div>
+      <p style="font-size: 14.5px; color: #bae6fd; max-width: 720px; line-height: 1.55; margin-bottom: 18px;">
+        Bộ slide này giải thích rõ: sản phẩm làm gì, dùng thế nào, từng chức năng hoạt động ra sao,
+        và vì sao Form2Change khác chatbot thông thường.
+      </p>
+      <div class="hero-pills" style="margin-top: 0;">
+        <span class="pill" style="padding: 6px 12px;">1. Giới thiệu</span>
+        <span class="pill" style="padding: 6px 12px;">2. Vấn đề</span>
+        <span class="pill" style="padding: 6px 12px;">3. 5 chức năng</span>
+        <span class="pill" style="padding: 6px 12px;">4. Case study</span>
+        <span class="pill" style="padding: 6px 12px;">5. 3 điểm mạnh</span>
+        <span class="pill" style="padding: 6px 12px;">6. Tóm tắt</span>
+      </div>
+    </section>
+
+    <!-- 2. Sản phẩm là gì -->
+    <section class="slide" data-slide="2" data-section="Giới thiệu">
+      <div class="badge">01 • SẢN PHẨM LÀ GÌ</div>
+      <h2>Agent xuất hiện ngay nơi bạn đang điền form</h2>
+      <p class="lead">
+        Agent chạy trực tiếp trên trang và mang lại ba điều cốt lõi:
+        <b style="color:#fff;">không bịa sự thật</b> — chỉ điền từ hồ sơ, tệp hoặc link của bạn;
+        <b style="color:#fff;">AI tối ưu theo mục đích form</b> — đăng bán thì viết chuẩn bán hàng, xin việc thì viết chuẩn hồ sơ ứng tuyển, giúp nâng cơ hội thành công;
+        <b style="color:#fff;">tự sửa khi validate thất bại</b> — trang báo sai thì agent cập nhật lại theo dữ liệu được cung cấp.
+      </p>
+      <div class="compare">
+        <article class="card rose">
+          <h3>Cách cũ — chatbot rồi copy-paste</h3>
+          <ul>
+            <li>Mở ChatGPT / Gemini, tự viết câu lệnh</li>
+            <li>Copy từng câu trả lời sang từng ô</li>
+            <li>Tự nhớ format ngày, SĐT, độ dài</li>
+            <li>Trang báo lỗi thì sửa tay từng chỗ</li>
+          </ul>
+        </article>
+        <div class="vs-pill">VS</div>
+        <article class="card emerald">
+          <h3>Form2Change — làm việc ngay trên trang</h3>
+          <ul>
+            <li>Agent Dock nổi ngay trên form đang mở</li>
+            <li>Chọn nguồn dữ liệu, bấm 1 lần là điền</li>
+            <li>AI đọc ràng buộc từng ô rồi mới điền</li>
+            <li>Form báo sai thì agent tự chữa tại chỗ</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- 3. Nỗi đau -->
+    <section class="slide" data-slide="3" data-section="Vấn đề">
+      <div class="badge" style="background: rgba(251, 113, 133, 0.22); border-color: rgba(251, 113, 133, 0.45);">02 • VÌ SAO CẦN SẢN PHẨM NÀY</div>
+      <h2>Biểu mẫu đang là nút thắt của cơ hội</h2>
+      <p class="lead">Mọi website đều hỏi lại điều bạn đã từng khai ở nơi khác. Hệ quả không chỉ là mất thời gian — mà là mất việc, mất đơn hàng, mất suất gọi vốn.</p>
+      <div class="grid-3">
+        <article class="card cyan">
+          <div class="metric" style="text-shadow: 0 0 20px rgba(56,189,248,.7);">40 phút</div>
+          <h3>Gõ thủ công mỗi biểu mẫu</h3>
+          <p>Trung bình 30–45 phút và khoảng 51 cú click để copy-paste lại họ tên, email, CV, mô tả sản phẩm qua các hệ thống rườm rà.</p>
+          <a class="metric-source-tag" href="https://www.shrm.org/topics-tools/news/talent-acquisition/people-92-never-finish-online-job-applications" target="_blank" rel="noopener noreferrer" title="Bấm để mở báo cáo kiểm toán Fortune 500 về quy trình nộp đơn trên SHRM &amp; Appcast">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+            Nguồn: Báo cáo InFlight &amp; Appcast ↗
+          </a>
+        </article>
+        <article class="card rose">
+          <div class="metric" style="text-shadow: 0 0 20px rgba(251,113,133,.7);">95%</div>
+          <h3>Bỏ cuộc vì “form fatigue”</h3>
+          <p>Ứng viên bỏ dở khi form bắt tạo tài khoản rồi gõ lại những gì đã có trong CV. Cơ hội biến mất trước khi hồ sơ kịp đến người đọc.</p>
+          <a class="metric-source-tag" href="https://www.shrm.org/topics-tools/news/talent-acquisition/people-92-never-finish-online-job-applications" target="_blank" rel="noopener noreferrer" title="Bấm để mở báo cáo nghiên cứu tuyển dụng của Appcast Benchmark &amp; SHRM">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+            Nguồn: Appcast Benchmark 2024 &amp; SHRM ↗
+          </a>
+        </article>
+        <article class="card amber">
+          <div class="metric" style="text-shadow: 0 0 20px rgba(251,191,36,.7);">88%</div>
+          <h3>Bị hệ thống tự động loại oan</h3>
+          <p>88% nhà tuyển dụng thừa nhận ATS/AI loại người đủ năng lực chỉ vì không khớp từ khóa. 98% Fortune 500 dùng bộ lọc tự động.</p>
+          <a class="metric-source-tag" href="https://www.hbs.edu/managing-the-future-of-work/research/hidden-workers-untapped-talent" target="_blank" rel="noopener noreferrer" title="Bấm để mở công trình nghiên cứu chính thức của Đại học Harvard (Harvard Business School &amp; HBR 2024)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+            Nguồn: Nghiên cứu Harvard (HBS &amp; HBR 2024) ↗
+          </a>
+        </article>
+      </div>
+    </section>
+
+    <!-- 4. Bản đồ chức năng -->
+    <section class="slide" data-slide="4" data-section="Chức năng">
+      <div class="badge">03 • BẢN ĐỒ CHỨC NĂNG</div>
+      <h2>Năm bước agent chạy mỗi khi bạn bấm điền</h2>
+      <div class="flow">
+        <article class="card cyan flow-item">
+          <div class="icon-box" style="background: rgba(56,189,248,.28);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </div>
+          <h3>1. Quan sát</h3>
+          <p>Quét mọi ô nhập, nhãn, ràng buộc và ngôn ngữ trang.</p>
+        </article>
+        <div class="flow-arrow">→</div>
+        <article class="card indigo flow-item">
+          <div class="icon-box" style="background: rgba(129,140,248,.3);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+          </div>
+          <h3>2. Hiểu mục tiêu</h3>
+          <p>Nhận ra đây là xin việc, đăng bán hay nộp dự án.</p>
+        </article>
+        <div class="flow-arrow">→</div>
+        <article class="card violet flow-item">
+          <div class="icon-box" style="background: rgba(192,132,252,.3);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          </div>
+          <h3>3. Nạp nguồn</h3>
+          <p>Lấy căn cứ từ hồ sơ, tệp, link — không bịa sự thật.</p>
+        </article>
+        <div class="flow-arrow">→</div>
+        <article class="card amber flow-item">
+          <div class="icon-box" style="background: rgba(251,191,36,.28);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          </div>
+          <h3>4. Điền 1-click</h3>
+          <p>Sinh giá trị đúng format, điền thẳng vào giao diện trang.</p>
+        </article>
+        <div class="flow-arrow">→</div>
+        <article class="card emerald flow-item">
+          <div class="icon-box" style="background: rgba(52,211,153,.28);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+          </div>
+          <h3>5. Tự sửa lỗi</h3>
+          <p>Trang báo sai thì chỉnh lại tại chỗ, rồi chờ bạn gửi.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- 5. Quan sát + Hiểu -->
+    <section class="slide" data-slide="5" data-section="Chức năng">
+      <div class="badge">04 • CHỨC NĂNG 1 &amp; 2</div>
+      <h2>Quan sát form và tự hiểu mục tiêu</h2>
+      <div class="grid-2">
+        <article class="card cyan">
+          <div class="row-head">
+            <div class="icon-box" style="background: rgba(56,189,248,.28); margin:0;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </div>
+            <h3 style="margin:0;">1. Quan sát — đọc hết những gì trang yêu cầu</h3>
+          </div>
+          <p>Agent quét mọi ô có thể nhập: text, select, radio, checkbox, ngày tháng, ô tùy chỉnh (React, Vue, Ant Design…).</p>
+          <ul style="margin-top:8px;">
+            <li>Nhãn, placeholder, gợi ý trợ giúp</li>
+            <li>Ràng buộc: bắt buộc, độ dài, regex, min/max, danh sách lựa chọn</li>
+            <li>Ngôn ngữ và locale trang (Việt, Anh, Nhật…)</li>
+          </ul>
+          <div class="example">
+            <b>Ví dụ — đăng bán tai nghe Bluetooth</b>
+            Agent thấy ô “Tên sản phẩm” tối đa 120 ký tự, “Mô tả” tối thiểu 100 ký tự, giá phải là số, cộng 20+ thuộc tính bắt buộc: màu, pin, cổng sạc, bảo hành.
+          </div>
+        </article>
+        <article class="card violet">
+          <div class="row-head">
+            <div class="icon-box" style="background: rgba(192,132,252,.28); margin:0;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+            </div>
+            <h3 style="margin:0;">2. Hiểu mục tiêu — không điền “cho có”</h3>
+          </div>
+          <p>Cùng một hồ sơ, câu trả lời phải khác nhau tùy form. Agent tự nhận ngữ cảnh rồi viết cho đúng mục đích.</p>
+          <ul style="margin-top:8px;">
+            <li><b style="color:#fff;">Xin việc / học bổng:</b> bài luận chuẩn STAR, có số liệu đo được</li>
+            <li><b style="color:#fff;">Đăng bán TMĐT:</b> tiêu đề SEO, mô tả kích thích mua, đủ thuộc tính</li>
+            <li><b style="color:#fff;">Nộp dự án / gọi vốn:</b> Problem — Solution — Moat, nổi bật thế mạnh</li>
+          </ul>
+          <div class="example">
+            <b>Ví dụ — đăng bán tai nghe Bluetooth</b>
+            Đây là form lên sàn, không phải form liên hệ. Agent viết tiêu đề SEO “Tai nghe Bluetooth chống ồn — pin 30 giờ”, mô tả kích thích mua — không viết “sản phẩm tốt, giá rẻ”.
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 6. Nguồn sự thật -->
+    <section class="slide" data-slide="6" data-section="Chức năng">
+      <div class="badge">05 • CHỨC NĂNG 3</div>
+      <h2>Nạp nguồn sự thật — AI chỉ viết từ căn cứ của bạn</h2>
+      <p class="lead">Trước khi điền, bạn chọn agent lấy thông tin từ đâu. AI vẫn là bộ não sinh giá trị cuối, nhưng không được bịa sự thật cá nhân.</p>
+      <div class="grid-4">
+        <article class="card emerald">
+          <h3>Hồ sơ đã lưu</h3>
+          <p>Ưu tiên sự thật trong Knowledge Hub: cá nhân, công ty, sản phẩm, dự án. Chỉ suy luận chỗ còn thiếu (nếu bạn cho phép).</p>
+        </article>
+        <article class="card cyan">
+          <h3>Tệp tài liệu</h3>
+          <p>Kéo CV, PDF, Word, ảnh hoặc bảng tính vào Dock. Agent đọc hiểu rồi đúc thành hồ sơ ngắn trước khi điền.</p>
+        </article>
+        <article class="card violet">
+          <h3>Link / tra cứu web</h3>
+          <p>Dán trang sản phẩm, LinkedIn, bài viết. Có thể kết hợp tìm kiếm thời gian thực để lấy thông tin mới nhất.</p>
+        </article>
+        <article class="card amber">
+          <h3>Tự sinh mẫu</h3>
+          <p>Chưa có hồ sơ? Agent đọc ngữ cảnh trang và sinh dữ liệu mẫu hợp lý, đúng ràng buộc — phù hợp demo hoặc bản nháp.</p>
+        </article>
+      </div>
+      <div class="grid-2" style="margin-top:12px;">
+        <article class="card">
+          <h3>Hybrid Mode</h3>
+          <p><b style="color:#fff;">Bật:</b> chỗ thiếu được AI bổ sung, không đụng dữ liệu đã có căn cứ.<br>
+          <b style="color:#fff;">Tắt:</b> chỗ không có căn cứ để trống — chế độ chống bịa nghiêm ngặt.</p>
+        </article>
+        <article class="card">
+          <h3>Knowledge Hub — gõ một lần, dùng mọi nơi</h3>
+          <p>Kho lưu trên máy bạn: nội dung gốc, hồ sơ AI đúc kết, các sự thật đã xác nhận. Lần sau chỉ cần chọn hồ sơ, không gõ lại.</p>
+        </article>
+      </div>
+      <div class="example" style="margin-top:12px;">
+        <b>Ví dụ — đăng bán tai nghe Bluetooth</b>
+        Người bán chọn hồ sơ sản phẩm đã lưu, kéo file thông số kỹ thuật và dán link trang sản phẩm. Agent lấy đúng tên, pin 30 giờ, màu Đen/Trắng — không bịa chứng nhận chống nước nếu spec không có.
+      </div>
+    </section>
+
+    <!-- 7. Điền + Self-heal -->
+    <section class="slide" data-slide="7" data-section="Chức năng">
+      <div class="badge">06 • CHỨC NĂNG 4 &amp; 5</div>
+      <h2>Điền một click, rồi tự sửa nếu trang báo lỗi</h2>
+      <p class="lead">Giá trị chỉ được điền khi đã vượt kiểm tra ràng buộc. Nếu website vẫn báo sai, agent đọc lỗi trên trang và chữa lại — bạn không phải đoán “họ muốn format gì”.</p>
+      <div class="grid-2">
+        <article class="card amber">
+          <div class="row-head">
+            <div class="icon-box" style="background: rgba(251,191,36,.28); margin:0;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            </div>
+            <h3 style="margin:0;">4. Điền 1-click — thao tác ngay trên DOM</h3>
+          </div>
+          <ul>
+            <li>Với từng ô, agent chọn 1 trong 4 mức: lấy nguyên từ hồ sơ, suy luận an toàn, AI tổng hợp theo ngữ cảnh, hoặc để trống nếu nhạy cảm / thiếu căn cứ</li>
+            <li>Điền cả form hiện đại: nhiều bước, component tùy chỉnh, React / Vue / Angular</li>
+            <li>Kích hoạt đủ sự kiện để trang nhận giá trị như người gõ thật</li>
+          </ul>
+          <div class="example">
+            <b>Ví dụ — đăng bán tai nghe Bluetooth</b>
+            Một click: tiêu đề SEO, giá 890.000đ, danh mục “Thiết bị âm thanh”, 20+ thuộc tính (màu, pin, cổng USB-C), mô tả kích thích mua — trang nhận như người gõ thật.
+          </div>
+        </article>
+        <article class="card emerald">
+          <div class="row-head">
+            <div class="icon-box" style="background: rgba(52,211,153,.28); margin:0;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+            </div>
+            <h3 style="margin:0;">5. Tự sửa lỗi — không đầu hàng khi validation fail</h3>
+          </div>
+          <ul>
+            <li>Đọc tín hiệu lỗi trên form: quá dài, sai định dạng, thiếu lựa chọn…</li>
+            <li>Gửi ngữ cảnh lỗi cho AI, sinh giá trị mới, điền lại đúng ô đó</li>
+            <li>Lặp vài vòng rồi dừng, chờ bạn rà soát — không tự bấm Gửi</li>
+          </ul>
+          <div class="example">
+            <b>Ví dụ — đăng bán tai nghe Bluetooth</b>
+            Tiêu đề 148 ký tự vượt max 120 → rút còn 118, giữ từ khóa SEO. Giá “890000” sàn bắt “890.000” → sửa tại chỗ. Người bán xem lại rồi tự bấm Đăng bán.
+          </div>
+        </article>
+      </div>
+      <div class="note">Human-in-the-loop: mật khẩu, thẻ, CCCD, OTP mặc định để trống hoặc đánh dấu cần bạn nhập.</div>
+    </section>
+
+    <!-- 8. Case study -->
+    <section class="slide" data-slide="8" data-section="Case study">
+      <div class="badge" style="background: rgba(251,191,36,.22); border-color: rgba(251,191,36,.45);">07 • CASE STUDY</div>
+      <h2>Minh nộp đơn Product Engineer — từ form trống đến hồ sơ sẵn sàng gửi</h2>
+      <div class="grid-2">
+        <article class="card violet">
+          <h3>Tình huống</h3>
+          <p style="margin-bottom:8px;">Minh đang ứng tuyển vị trí <b style="color:#fff;">Product Engineer</b>. Form tuyển dụng có 18 trường: thông tin cá nhân, LinkedIn, năm kinh nghiệm, hai câu hỏi mở, và checkbox điều khoản.</p>
+          <p style="margin-bottom:8px;"><b style="color:#fff;">Cách cũ:</b> mở CV, copy từng ô, tự viết luận, dễ sai format SĐT hoặc vượt giới hạn ký tự — mất khoảng 40 phút, nhiều người bỏ cuộc giữa chừng.</p>
+          <p><b style="color:#fff;">Minh làm gì với Form2Change:</b> chọn hồ sơ cá nhân đã lưu, kéo file CV.pdf vào Dock — rồi bấm “Tự động điền”. Không viết prompt.</p>
+        </article>
+        <div class="story-list">
+          <article class="story-step">
+            <div class="step-num">1</div>
+            <div>
+              <h3>Quan sát</h3>
+              <p>Agent đọc form: SĐT bắt buộc dạng 0X XXXX XXXX, “Vì sao bạn phù hợp?” tối đa 400 ký tự, câu chuyện khó khăn tối đa 500 ký tự, select cấp bậc.</p>
+            </div>
+          </article>
+          <article class="story-step">
+            <div class="step-num">2</div>
+            <div>
+              <h3>Hiểu mục tiêu</h3>
+              <p>Đây là đơn xin việc, không phải form liên hệ. Agent viết luận chuẩn STAR có số liệu, ghép từ khóa JD — không viết bio chung chung.</p>
+            </div>
+          </article>
+          <article class="story-step">
+            <div class="step-num">3</div>
+            <div>
+              <h3>Nạp nguồn</h3>
+              <p>Lấy đúng sự thật từ CV: 3 năm frontend, React/TypeScript, dự án giảm ~90% thời gian điền form. Không bịa công ty hay chứng chỉ chưa từng có.</p>
+            </div>
+          </article>
+          <article class="story-step">
+            <div class="step-num">4</div>
+            <div>
+              <h3>Điền 1-click</h3>
+              <p>Một lúc điền họ tên, email, LinkedIn, cấp bậc Mid-level, và bài luận STAR nhắc dự án tự động hóa nhập liệu — trang nhận như Minh gõ thật.</p>
+            </div>
+          </article>
+          <article class="story-step">
+            <div class="step-num">5</div>
+            <div>
+              <h3>Tự sửa lỗi rồi chờ Minh</h3>
+              <p>SĐT “+84 912…” → sửa thành “0912 345 678”. Luận 468 ký tự vượt max 400 → rút còn 392, giữ số liệu. Minh xem lại, tự bấm Nộp đơn.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="note">Kết quả: 40 phút gõ tay → vài giây với 1 cú click • luận STAR có căn cứ • Minh tự quyết định gửi</div>
+    </section>
+
+    <!-- 9. Điểm mạnh 1 -->
+    <section class="slide" data-slide="9" data-section="Điểm mạnh">
+      <div class="badge" style="background: rgba(56,189,248,.22);">08 • ĐIỂM MẠNH 1</div>
+      <h2>Chạy trực tiếp trên trang — không mở chatbox</h2>
+      <p class="lead">Giá trị cốt lõi của Form2Change không thể sao chép bằng một chatbot độc lập: agent cảm nhận DOM theo thời gian thực và thao tác ngay nơi công việc đang diễn ra.</p>
+      <div class="grid-3">
+        <article class="card cyan">
+          <h3>In-situ trên trình duyệt</h3>
+          <p>Agent Dock nổi trên website mục tiêu. Bạn không rời tab, không chuyển cửa sổ, không copy-paste qua lại.</p>
+        </article>
+        <article class="card indigo">
+          <h3>Zero prompt</h3>
+          <p>Không cần học viết câu lệnh. Chọn nguồn → bấm điền. Agent tự hiểu form và tự chuẩn bị dữ liệu.</p>
+        </article>
+        <article class="card violet">
+          <h3>Thao tác như người dùng thật</h3>
+          <p>Điền native trên DOM, tương thích form hiện đại. Wizard nhiều bước vẫn giữ hồ sơ đã chọn xuyên suốt.</p>
+        </article>
+      </div>
+      <div class="note">Đây là lý do sản phẩm thuộc chủ đề “Agents, Everywhere”: agent đến đúng chỗ người ta đang làm việc.</div>
+    </section>
+
+    <!-- 10. Điểm mạnh 2 + use cases -->
+    <section class="slide" data-slide="10" data-section="Điểm mạnh">
+      <div class="badge" style="background: rgba(192,132,252,.22);">09 • ĐIỂM MẠNH 2</div>
+      <h2>Không chỉ điền form — nâng tầm kết quả</h2>
+      <p class="lead">Cùng một cú click, agent viết theo chuẩn ngành của từng loại biểu mẫu — để tăng khả năng được chọn, được mua, được gọi vốn.</p>
+      <div class="grid-3">
+        <article class="card emerald">
+          <div class="metric" style="text-shadow: 0 0 20px rgba(52,211,153,.7);">3 lần</div>
+          <h3>Ứng tuyển &amp; học bổng</h3>
+          <p>Tự viết bài luận chuẩn <b style="color:#fff;">STAR</b> (Tình huống — Nhiệm vụ — Hành động — Kết quả) có số liệu, giúp vượt vòng lọc hồ sơ tự động.</p>
+          <a href="https://www.topresume.com/career-advice/how-to-write-a-star-resume" target="_blank" rel="noreferrer" class="metric-source-tag" title="Nghiên cứu TopResume &amp; TalentWorks: Cấu trúc STAR tăng 2-3x tỷ lệ phản hồi phỏng vấn">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+            Nguồn: TopResume &amp; TalentWorks
+          </a>
+        </article>
+        <article class="card cyan">
+          <div class="metric" style="text-shadow: 0 0 20px rgba(56,189,248,.7);">+35%</div>
+          <h3>Đăng bán sản phẩm TMĐT</h3>
+          <p>Tự tạo tiêu đề <b style="color:#fff;">chuẩn SEO</b> và mô tả kích thích mua hàng, điền đủ 20+ thuộc tính mà sàn thường yêu cầu.</p>
+          <a href="https://www.salsify.com/resources/research-reports" target="_blank" rel="noreferrer" class="metric-source-tag" title="Báo cáo Salsify &amp; Baymard: Tối ưu mô tả chuẩn SEO và thuộc tính tăng 30-35% chuyển đổi">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+            Nguồn: Báo cáo Salsify &amp; Baymard
+          </a>
+        </article>
+        <article class="card violet">
+          <div class="metric" style="text-shadow: 0 0 20px rgba(192,132,252,.7);">TOP 1</div>
+          <h3>Nộp dự án &amp; gọi vốn</h3>
+          <p>Trình bày sắc bén <b style="color:#fff;">Problem — Solution — Moat</b>, làm nổi bật thế mạnh công nghệ theo rubric Y Combinator / hackathon.</p>
+          <a href="https://www.ycombinator.com/howtoapply" target="_blank" rel="noreferrer" class="metric-source-tag" title="Tiêu chí thẩm định hồ sơ công nghệ chuẩn Y Combinator &amp; Hackathon">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+            Chuẩn: Y Combinator &amp; AI Tinkerers
+          </a>
+        </article>
+      </div>
+    </section>
+
+    <!-- 11. Điểm mạnh 3 -->
+    <section class="slide" data-slide="11" data-section="Điểm mạnh">
+      <div class="badge" style="background: rgba(52,211,153,.22);">10 • ĐIỂM MẠNH 3</div>
+      <h2>100% sự thật, tự sửa lỗi, bạn giữ quyền quyết định</h2>
+      <p class="lead">Tự động không có nghĩa là hộp đen. Dữ liệu có nguồn gốc rõ, trường nhạy cảm được bảo vệ, và nút Gửi luôn nằm trong tay bạn.</p>
+      <div class="grid-3">
+        <article class="card emerald">
+          <h3>Không bịa đặt</h3>
+          <p>Thông tin cá nhân / doanh nghiệp lấy từ hồ sơ, tệp hoặc link đã chọn. Hybrid Mode tắt thì chỗ thiếu để trống, không bịa cho đủ form.</p>
+        </article>
+        <article class="card cyan">
+          <h3>Tự sửa tại chỗ</h3>
+          <p>Validation của trình duyệt hay framework báo sai thì agent đọc lỗi và chỉnh giá trị ngay trên ô đó — không ném lỗi về cho bạn đoán.</p>
+        </article>
+        <article class="card amber">
+          <h3>Bạn quyết định Submit</h3>
+          <p>Luôn xem trước dữ liệu trên form. Mật khẩu, CCCD, thẻ, OTP được đánh dấu. Hồ sơ lưu local trên máy. Có thể giới hạn domain được phép chạy.</p>
+        </article>
+      </div>
+      <div class="note">Mô hình dùng: miễn phí, mang API key của bạn — dữ liệu không bắt buộc đi qua backend trung gian.</div>
+    </section>
+
+    <!-- 12. Tóm tắt -->
+    <section class="slide center" data-slide="12" data-section="Tóm tắt">
+      <div class="badge">SẴN SÀNG DÙNG</div>
+      <h1><span class="gradient-text">FROM FORM TO CHANGE</span></h1>
+      <p class="lead" style="text-align:center;">
+        Quan sát form → hiểu mục tiêu → lấy sự thật → điền 1 click → tự sửa lỗi → bạn tự gửi.
+      </p>
+      <div class="hero-pills">
+        <span class="pill" style="padding: 8px 14px; font-size: 13.5px;"><b>40 phút → 5 giây</b> &nbsp;1 cú click</span>
+        <span class="pill" style="padding: 8px 14px; font-size: 13.5px;"><b>3 lần</b> &nbsp;cơ hội phỏng vấn</span>
+        <span class="pill" style="padding: 8px 14px; font-size: 13.5px;"><b>+35%</b> &nbsp;chốt đơn TMĐT</span>
+        <span class="pill" style="padding: 8px 14px; font-size: 13.5px;"><b>100%</b> &nbsp;không bịa đặt</span>
+      </div>
+      <p style="font-size: 15px; color: #ffffff; font-weight: 600; margin-bottom: 14px;">
+        Turn every form into an opportunity.
+      </p>
+      <div style="font-size: 13px; color: #e0f2fe; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.3); padding: 6px 20px; border-radius: 999px;">
+        <span>Được trợ lực bởi</span>
+        <b style="color:#fff;">OpenAI</b><span style="opacity:.4;">•</span>
+        <b style="color:#fff;">CopilotKit</b><span style="opacity:.4;">•</span>
+        <b style="color:#fff;">OpenRouter</b><span style="opacity:.4;">•</span>
+        <b style="color:#fff;">Google Gemini</b>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="slide-dots" id="dots-container"></div>
+    <div class="footer-hint">
+      Phím tắt: <kbd>←</kbd> <kbd>→</kbd> Đổi trang • <kbd>F</kbd> Toàn màn hình • <kbd>1</kbd>–<kbd>9</kbd> Nhảy trang
+    </div>
+    <div class="nav-btns">
+      <button class="btn-hdr" id="btn-prev">Trước</button>
+      <span class="slide-num" id="slide-num-text">1 / 12</span>
+      <button class="btn-hdr" id="btn-next">Tiếp theo</button>
+    </div>
+  </footer>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const totalSlides = slides.length;
+    const progressBar = document.getElementById("progress-bar");
+    const slideNumText = document.getElementById("slide-num-text");
+    const sectionChip = document.getElementById("section-chip");
+    const dotsContainer = document.getElementById("dots-container");
+
+    let currentSlide = 1;
+    let lastSlide = 1;
+
+    slides.forEach((_, idx) => {
+      const dot = document.createElement("div");
+      dot.className = "dot" + (idx === 0 ? " active" : "");
+      dot.dataset.target = String(idx + 1);
+      dot.title = "Trang " + (idx + 1);
+      dot.addEventListener("click", () => goToSlide(idx + 1));
+      dotsContainer.appendChild(dot);
+    });
+
+    const dots = Array.from(document.querySelectorAll(".dot"));
+
+    function goToSlide(n) {
+      if (n < 1) n = 1;
+      if (n > totalSlides) n = totalSlides;
+      if (n === currentSlide) return;
+
+      const goingForward = n > currentSlide;
+      const prev = document.querySelector(".slide.active");
+      const next = document.querySelector('.slide[data-slide="' + n + '"]');
+
+      if (prev) {
+        prev.classList.remove("active");
+        prev.classList.toggle("exit-left", goingForward);
+        prev.classList.toggle("exit-right", !goingForward);
+      }
+
+      slides.forEach((s) => {
+        if (s !== prev && s !== next) {
+          s.classList.remove("exit-left", "exit-right");
+        }
+      });
+
+      if (next) {
+        next.classList.remove("exit-left", "exit-right");
+        next.classList.add("active");
+        sectionChip.textContent = next.dataset.section || "Form2Change";
+      }
+
+      lastSlide = currentSlide;
+      currentSlide = n;
+
+      dots.forEach((dot, idx) => dot.classList.toggle("active", idx + 1 === n));
+      slideNumText.textContent = n + " / " + totalSlides;
+      progressBar.style.width = (n / totalSlides) * 100 + "%";
+    }
+
+    document.getElementById("btn-prev").addEventListener("click", () => goToSlide(currentSlide - 1));
+    document.getElementById("btn-next").addEventListener("click", () => goToSlide(currentSlide + 1));
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    document.getElementById("btn-fullscreen").addEventListener("click", toggleFullscreen);
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") {
+        e.preventDefault();
+        goToSlide(currentSlide + 1);
+      } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
+        goToSlide(currentSlide - 1);
+      } else if (e.key === "f" || e.key === "F") {
+        toggleFullscreen();
+      } else if (e.key === "Home") {
+        goToSlide(1);
+      } else if (e.key === "End") {
+        goToSlide(totalSlides);
+      } else if (/^[1-9]$/.test(e.key)) {
+        goToSlide(parseInt(e.key, 10));
+      }
+    });
+
+    let touchStartX = 0;
+    document.addEventListener("touchstart", (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    document.addEventListener("touchend", (e) => {
+      const dx = e.changedTouches[0].screenX - touchStartX;
+      if (dx < -50) goToSlide(currentSlide + 1);
+      if (dx > 50) goToSlide(currentSlide - 1);
+    }, { passive: true });
+
+    progressBar.style.width = (1 / totalSlides) * 100 + "%";
+  </script>
+</body>
+</html>
