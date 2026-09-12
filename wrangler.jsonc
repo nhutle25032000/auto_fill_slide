@@ -1,0 +1,11 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "auto-fill-slide",
+  // Workers Static Assets — site tĩnh, không cần Worker script
+  "compatibility_date": "2026-09-12",
+  "assets": {
+    "directory": "./public",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  }
+}
